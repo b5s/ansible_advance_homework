@@ -1,2 +1,25 @@
 ---
-# tasks file for db-tier
+# tasks file for roles/db-tier
+- name: Install postgresql
+  yum:
+   name: "{{ item }}"
+   state: latest
+  with_items:
+   - "{{ db_pkg }}" 
+
+- name: Check if postgresql has been initialised
+  stat:
+    path: /var/lib/pgsql/data/PG_VERSION
+  register: postgresql_initdb
+
+- name: Initialise database
+  command: postgresql-setup initdb
+  when: postgresql_initdb.stat.exists == false
+  
+- name: Start postgresql
+  service:
+   name: "{{ db_srv }}"
+   enabled: true
+   state: started 
+
+

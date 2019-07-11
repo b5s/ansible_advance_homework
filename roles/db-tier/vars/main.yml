@@ -1,2 +1,6 @@
 ---
-# vars file for db-tier
+# vars file for roles/db-tier
+db_pkg:
+ - postgresql-server
+
+db_srv: postgresql

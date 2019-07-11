@@ -1,2 +1,28 @@
 ---
-# tasks file for app-tier
+# tasks file for roles/app-tier
+# Installation of packages based on inventory groups
+- name: Install tomcat
+  yum:
+   #name: "{{ item }}"
+   name: "{{ tomcat_pkg }}"
+   state: present
+  #with_items:
+   #- "{{ tomcat_pkg }}"
+
+- name: Start tomcat
+  service:
+   name: "{{ tomcat_srv }}"
+   enabled: true
+   state: started
+
+- name: Create Document Root
+  file:
+   path: /usr/share/tomcat/webapps/ROOT
+   state: directory
+
+- name: Copy static index.html to webapps/ROOT
+  template:
+   src: index.html.j2
+   dest: /usr/share/tomcat/webapps/ROOT/index.html
+   mode: 0644
+   group: tomcat
