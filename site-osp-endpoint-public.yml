@@ -1,0 +1,13 @@
+- hosts: localhost
+  tasks:
+  - name: Create workstation inventory
+    add_host:
+       name: "workstation-{{OSP_GUID}}.rhpds.opentlc.com"
+       group: workstation
+
+- hosts: workstation
+  become: true
+  gather_facts: true
+  roles:
+  - name: osp-update-endpoints
+    when: OSP_GUID is defined
