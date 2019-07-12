@@ -8,6 +8,7 @@
     register: openstack_info
     tags:
       - osp.smoke
+      
   - name: Curl website
     url: "http://{{item.public_v4}}"
     return_content: yes
